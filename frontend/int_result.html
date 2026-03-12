@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundSense - Interview Feedback</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .result-page-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        .result-page-with-nav {
+            padding-top: 2rem;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
+            color: var(--text-main);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 0.85rem 1.6rem;
+            border-radius: 12px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .back-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(59, 130, 246, 0.2) 100%);
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateX(-8px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .left-col {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .right-col {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(15, 23, 42, 0.65) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 18px;
+            padding: 1.75rem;
+            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(99, 102, 241, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.5;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 60px rgba(99, 102, 241, 0.25), 0 0 0 1px rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.35);
+        }
+
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        .score-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .score-display::after {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            background: radial-gradient(circle at center, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { 
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        .score-circle-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 8px 25px rgba(99, 102, 241, 0.4));
+        }
+
+        .score-circle-container svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .score-circle-container circle {
+            fill: none;
+            stroke-width: 10;
+            stroke-linecap: round;
+        }
+
+        .circle-bg {
+            stroke: rgba(255, 255, 255, 0.08);
+        }
+
+        .circle-progress {
+            stroke: url(#gradient);
+            stroke-dasharray: 440;
+            stroke-dashoffset: 440;
+            transition: stroke-dashoffset 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.6));
+        }
+
+        .score-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #6366f1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            filter: drop-shadow(0 2px 8px rgba(99, 102, 241, 0.5));
+            animation: pulse-score 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-score {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        .score-number small {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            display: block;
+            margin-top: -5px;
+            background: none;
+            -webkit-text-fill-color: var(--text-muted);
+        }
+
+        .feedback-text {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-top: 1rem;
+        }
+
+        h3.section-title {
+            font-size: 1.15rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: white;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.15);
+            padding-bottom: 0.9rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ffffff, #a5b4fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h3.section-title i {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.1rem;
+        }
+
+        .criteria-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .criterion-item {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(0, 0, 0, 0.2) 100%);
+            padding: 1.2rem;
+            border-radius: 14px;
+            border: 1px solid rgba(99, 102, 241, 0.12);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .criterion-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .criterion-item:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(0, 0, 0, 0.25) 100%);
+            border-color: rgba(99, 102, 241, 0.25);
+            transform: translateX(4px);
+        }
+
+        .criterion-item:hover::before {
+            left: 100%;
+        }
+
+        .criterion-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.1) 50%, 
+                transparent 100%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, 
+                var(--primary) 0%, 
+                var(--secondary) 50%, 
+                var(--accent) 100%);
+            background-size: 200% 100%;
+            width: 0;
+            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .suggestions-list {
+            list-style: none;
+        }
+
+        .suggestions-list li {
+            position: relative;
+            padding-left: 2.5rem;
+            margin-bottom: 1.2rem;
+            color: var(--text-main);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .suggestions-list li::before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 1.3rem;
+            filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.4));
+        }
+
+        .suggestions-list li:hover {
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .strengths-list { 
+            list-style: none; 
+        }
+        
+        .strengths-list li { 
+            padding: 0.7rem 0; 
+            padding-left: 2rem; 
+            position: relative; 
+            color: var(--text-main);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        
+        .strengths-list li::before { 
+            content: "✓"; 
+            position: absolute; 
+            left: 0; 
+            color: var(--success); 
+            font-weight: bold;
+            font-size: 1.3rem;
+            background: rgba(16, 185, 129, 0.15);
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .strengths-list li:hover {
+            color: white;
+            transform: translateX(4px);
+        }
+        
+        .tooltip-icon { 
+            opacity: 0.7; 
+            cursor: help; 
+            font-size: 0.85rem; 
+        }
+
+        /* Special Card Styling */
+        .strengths-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(5, 150, 105, 0.08) 100%) !important;
+            border-color: rgba(16, 185, 129, 0.3) !important;
+            box-shadow: 0 12px 45px rgba(16, 185, 129, 0.2), 0 0 0 1px rgba(16, 185, 129, 0.15) !important;
+        }
+
+        .strengths-card:hover {
+            box-shadow: 0 16px 60px rgba(16, 185, 129, 0.3), 0 0 0 1px rgba(16, 185, 129, 0.25) !important;
+        }
+
+        .improvement-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(217, 119, 6, 0.05) 100%) !important;
+            border-color: rgba(245, 158, 11, 0.25) !important;
+            box-shadow: 0 12px 45px rgba(245, 158, 11, 0.15), 0 0 0 1px rgba(245, 158, 11, 0.1) !important;
+        }
+
+        .improvement-card:hover {
+            box-shadow: 0 16px 60px rgba(245, 158, 11, 0.25), 0 0 0 1px rgba(245, 158, 11, 0.2) !important;
+        }
+
+        .improvement-card h3.section-title {
+            border-bottom-color: rgba(245, 158, 11, 0.2) !important;
+        }
+
+        /* Audio Player Styling */
+        #res-audio-player {
+            filter: saturate(0.8) brightness(0.85);
+            transition: all 0.3s ease;
+        }
+
+        #res-audio-player:hover {
+            filter: saturate(1) brightness(1);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="global-nav">
+        <a href="app.html" class="nav-brand">
+            <i class="fa-solid fa-headphones"></i> Sound<span class="highlight">Sense</span>
+        </a>
+        <nav class="nav-links">
+            <a href="app.html">AI Voice Check</a>
+            <a href="app.html">Interview Coach</a>
+            <a href="app.html">History</a>
+            <a href="about.html">About</a>
+        </nav>
+        <div class="nav-user">
+            <span class="user-name">
+                <i class="fa-solid fa-circle-user"></i>
+                Hi, <span id="user-display-name">User</span>
+            </span>
+            <button id="logout-btn" class="btn-secondary btn-small">Logout</button>
+        </div>
+    </header>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2" style="background: radial-gradient(circle, var(--success) 0%, transparent 70%);"></div>
+
+    <div class="result-page-container result-page-with-nav">
+        <a href="app.html" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+        </a>
+
+        <div class="dashboard-grid">
+            <!-- Left Column: Overall Score & Transcript -->
+            <div class="left-col">
+                <div class="glass-card score-display">
+                    <div class="score-circle-container">
+                        <svg viewBox="0 0 160 160">
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
+                            <circle class="circle-progress" id="score-ring" cx="80" cy="80" r="70"></circle>
+                        </svg>
+                        <div class="score-number">
+                            <span id="res-overall-score">--</span>
+                            <small>/ 100</small>
+                        </div>
+                    </div>
+                    <h2 style="margin-bottom: 0.5rem; color: white; font-size: 1.6rem; font-weight: 700;">Overall Performance</h2>
+                    <p class="feedback-text" id="res-overall-feedback">Loading feedback...</p>
+                </div>
+
+                <div class="glass-card">
+                    <h3 class="section-title"><i class="fa-solid fa-play"></i> Original Audio</h3>
+                    <div style="text-align: center;">
+                        <audio id="res-audio-player" controls style="width: 100%; max-width: 100%; height: 40px; border-radius: 50px; outline: none; display: none;"></audio>
+                        <p id="audio-unavailable-msg" style="display: none; color: var(--text-muted); font-size: 0.9rem; font-style: italic; margin: 0.5rem 0;">
+                            <i class="fa-solid fa-info-circle"></i> Audio file not available for historical results
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass-card strengths-card">
+                    <h3 class="section-title" style="color: var(--success);"><i class="fa-solid fa-star"></i> What you did well <span class="tooltip-icon" title="Top 3 criteria by score">ⓘ</span></h3>
+                    <ul class="strengths-list" id="res-strengths"></ul>
+                </div>
+                <div class="glass-card" id="question-card" style="display: none;">
+                    <h3 class="section-title"><i class="fa-solid fa-question-circle"></i> Question addressed</h3>
+                    <p id="res-question" style="color: var(--text-muted); font-style: italic;"></p>
+                </div>
+                <div class="glass-card">
+                    <h3 class="section-title"><i class="fa-solid fa-language"></i> Detected Language</h3>
+                    <p id="res-language" style="color: white; font-size: 1.1rem; font-weight: 500;">Unknown</p>
+                </div>
+                <div class="glass-card">
+                    <h3 class="section-title"><i class="fa-solid fa-comment-dots"></i> Transcript <span class="tooltip-icon" title="Speech-to-text result">ⓘ</span></h3>
+                    <p id="res-transcript" style="font-style: italic; color: var(--text-muted); line-height: 1.6;">...</p>
+                </div>
+            </div>
+
+            <!-- Right Column: Criteria & Suggestions -->
+            <div class="right-col">
+                <div class="glass-card">
+                    <h3 class="section-title"><i class="fa-solid fa-chart-bar"></i> Detailed Breakdown</h3>
+                    <div class="criteria-list" id="res-criteria-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div class="glass-card improvement-card">
+                    <h3 class="section-title" style="color: var(--warning);">
+                        <i class="fa-solid fa-bullseye"></i> Areas for Improvement
+                    </h3>
+                    <ul class="suggestions-list" id="res-suggestions">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/int_result.js"></script>
+    <script>
+        document.getElementById('user-display-name').textContent = localStorage.getItem('user_name') || 'User';
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_name');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

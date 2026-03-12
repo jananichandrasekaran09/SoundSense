@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundSense - Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="global-nav">
+        <a href="app.html" class="nav-brand">
+            <i class="fa-solid fa-headphones"></i> Sound<span class="highlight">Sense</span>
+        </a>
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="deepfake">AI Voice Check</button>
+            <button class="tab-btn" data-tab="interview">Interview Coach</button>
+            <button class="tab-btn" data-tab="history">History</button>
+            <a href="about.html" class="tab-btn tab-btn-link">About</a>
+        </nav>
+        <div class="nav-user">
+            <span class="user-name">
+                <i class="fa-solid fa-circle-user"></i>
+                Hi, <span id="user-display-name">User</span>
+            </span>
+            <button id="logout-btn" class="btn-secondary btn-small">Logout</button>
+        </div>
+    </header>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="app-container">
+        <main>
+            <!-- AI Voice Check Module -->
+            <section id="deepfake" class="tab-content active glass-panel">
+                <div class="header-text">
+                    <h2>AI Voice Check</h2>
+                    <p>Upload audio to check if the voice sounds authentic or AI-generated.</p>
+                </div>
+                
+                <div class="upload-area" id="drop-area-df">
+                    <input type="file" id="file-df" accept=".wav,.mp3,.ogg" hidden>
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <h3>Drag & Drop Audio File Here</h3>
+                    <p>or</p>
+                    <div class="button-group">
+                        <button class="btn-primary" onclick="document.getElementById('file-df').click()">Browse Files</button>
+                        <button class="btn-secondary" id="record-btn-df"><i class="fa-solid fa-microphone"></i> Record Live</button>
+                    </div>
+                    <div class="file-name" id="file-name-df"></div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="btn-analyze" id="analyze-btn-df" disabled>
+                        <span>Analyze Audio</span>
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </button>
+                </div>
+
+                <div class="loading-state hidden" id="loading-df">
+                    <div class="waveform">
+                        <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    </div>
+                    <p>Analyzing acoustic features...</p>
+                </div>
+
+            </section>
+
+            <!-- Interview Coach Module -->
+            <section id="interview" class="tab-content glass-panel hidden">
+                <div class="header-text">
+                    <h2>Interview Coach</h2>
+                    <p>Upload a recording of your answer and get feedback on clarity, confidence, and structure.</p>
+                </div>
+
+                <div class="input-group optional-question">
+                    <label for="interview-question">Optional: Interview question (e.g. &quot;Tell me about yourself&quot;)</label>
+                    <input type="text" id="interview-question" placeholder="Helps tailor feedback">
+                </div>
+                <div class="upload-area" id="drop-area-int">
+                    <input type="file" id="file-int" accept=".wav,.mp3,.ogg" hidden>
+                    <i class="fa-solid fa-users-viewfinder"></i>
+                    <h3>Drag & Drop Interview Recording</h3>
+                    <p>or</p>
+                    <div class="button-group">
+                        <button class="btn-primary" onclick="document.getElementById('file-int').click()">Browse Files</button>
+                        <button class="btn-secondary" id="record-btn-int"><i class="fa-solid fa-microphone"></i> Record Live</button>
+                    </div>
+                    <div class="file-name" id="file-name-int"></div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="btn-analyze" id="analyze-btn-int" disabled>
+                        <span>Evaluate Performance</span>
+                        <i class="fa-solid fa-chart-line"></i>
+                    </button>
+                </div>
+
+                <div class="loading-state hidden" id="loading-int">
+                    <div class="spinner"></div>
+                    <p>Transcribing and scoring 9 key criteria...</p>
+                </div>
+
+            </section>
+
+            <!-- History & Stats -->
+            <section id="history" class="tab-content glass-panel hidden">
+                <div class="header-text">
+                    <h2>Analysis History</h2>
+                    <p>Your recent voice checks and interview practice.</p>
+                </div>
+                <div class="stats-strip" id="stats-strip">
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-df-total">0</span>
+                        <span class="stat-label">Voice checks</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-df-ai">0%</span>
+                        <span class="stat-label">Detected AI</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-int-total">0</span>
+                        <span class="stat-label">Interviews</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-int-avg">--</span>
+                        <span class="stat-label">Avg score</span>
+                    </div>
+                </div>
+                <div class="history-list" id="history-list">
+                    <p class="text-muted">Loading history...</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+    <!-- Global loading overlay -->
+    <div id="global-overlay" class="global-overlay hidden">
+        <div class="overlay-spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundSense – Voice & Interview</title>
+    <!-- Modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/landing.css">
+</head>
+<body class="landing-body">
+    <!-- Enhanced Abstract background -->
+    <div class="gradient-bg"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="landing-container">
+        
+        <nav class="landing-nav">
+            <div class="logo">SoundSense</div>
+            <a href="login.html" class="nav-signin-btn">Sign In</a>
+        </nav>
+
+        <header class="landing-hero">
+            <div class="hero-badge">
+                <span class="badge-icon">🎯</span>
+                <span class="badge-text">AI-Powered Voice Analysis Platform</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="title-line">SoundSense</span>
+                <span class="title-line gradient-text">Voice & Interview</span>
+            </h1>
+            <p class="hero-description">
+                Your complete solution for interview preparation and AI voice detection
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎤</div>
+                    <h3>Interview Preparation</h3>
+                    <p>Practice and improve your interview skills with AI-powered feedback and evaluation</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>AI Voice Detection</h3>
+                    <p>Detect deepfakes and synthetic voices with advanced machine learning algorithms</p>
+                </div>
+            </div>
+            
+            <div class="login-prompt">
+                <p class="prompt-text">✨ Login now to experience the power of AI-driven voice analysis</p>
+            </div>
+            
+            <div class="hero-cta">
+                <button class="cta-primary" onclick="window.location.href='login.html'">Login to Get Started</button>
+                <a href="about.html" class="cta-secondary">Learn More</a>
+            </div>
+            
+            <!-- Floating particles for visual interest -->
+            <div class="particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+        </header>
+    </div>
+
+    <script>
+        // Floating animation for glows
+        document.querySelectorAll('.glow').forEach((glow, index) => {
+            const delay = index * 2000;
+            const duration = 8000 + (index * 2000);
+            glow.style.animation = `float ${duration}ms ease-in-out ${delay}ms infinite alternate`;
+        });
+
+        // Mouse move parallax effect (subtle)
+        let rafId;
+        document.addEventListener('mousemove', (e) => {
+            if (rafId) cancelAnimationFrame(rafId);
+            
+            rafId = requestAnimationFrame(() => {
+                const { clientX, clientY } = e;
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                
+                const moveX = (clientX - centerX) / 80;
+                const moveY = (clientY - centerY) / 80;
+                
+                document.querySelectorAll('.glow').forEach((glow, index) => {
+                    const multiplier = (index + 1) * 0.3;
+                    glow.style.transform = `translate(${moveX * multiplier}px, ${moveY * multiplier}px)`;
+                });
+            });
+        });
+        
+        // Add subtle tilt effect to feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>

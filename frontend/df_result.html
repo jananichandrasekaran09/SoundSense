@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundSense - Analysis Result</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .result-page-container {
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        .result-page-with-nav {
+            padding-top: 2rem;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
+            color: var(--text-main);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 0.85rem 1.6rem;
+            border-radius: 12px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .back-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(59, 130, 246, 0.2) 100%);
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateX(-8px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .huge-prediction {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 30px currentColor;
+            animation: glow-text 2s ease-in-out infinite;
+        }
+
+        @keyframes glow-text {
+            0%, 100% { 
+                filter: drop-shadow(0 0 10px currentColor);
+            }
+            50% { 
+                filter: drop-shadow(0 0 20px currentColor);
+            }
+        }
+
+        .prediction-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(15, 23, 42, 0.65) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 18px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(99, 102, 241, 0.1);
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .prediction-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.6;
+            transition: opacity 0.4s;
+        }
+
+        .prediction-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 70px rgba(99, 102, 241, 0.3), 0 0 0 1px rgba(99, 102, 241, 0.2);
+        }
+
+        .prediction-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-bg-pulse {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(46, 160, 67, 0.1), transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .huge-prediction.authentic-text { color: var(--success); }
+        .huge-prediction.fake-text { color: var(--danger); }
+
+        .confidence-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(0, 0, 0, 0.4) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 1.5rem;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.4), inset 0 0 20px rgba(99, 102, 241, 0.1);
+            animation: pulse-circle 2.5s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        .confidence-circle::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            z-index: -1;
+            filter: blur(4px);
+        }
+
+        @keyframes pulse-circle {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 40px rgba(99, 102, 241, 0.4), inset 0 0 20px rgba(99, 102, 241, 0.1);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 0 60px rgba(99, 102, 241, 0.6), inset 0 0 30px rgba(99, 102, 241, 0.2);
+            }
+        }
+
+        /* Audio Player Styling */
+        #res-audio-player {
+            filter: saturate(0.8) brightness(0.85);
+            transition: all 0.3s ease;
+        }
+
+        #res-audio-player:hover {
+            filter: saturate(1) brightness(1);
+        }
+
+        .audio-section {
+            background: rgba(99, 102, 241, 0.05);
+            padding: 1rem;
+            border-radius: 14px;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .conf-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #6366f1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            filter: drop-shadow(0 2px 8px rgba(99, 102, 241, 0.5));
+        }
+
+        .conf-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .detail-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 1.5rem;
+            border-radius: 16px;
+        }
+
+        .detail-box h4 {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .explanation-text {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .transcript-full { grid-column: 1 / -1; font-style: italic; color: #cbd5e1; border-left: 4px solid var(--accent); }
+        .voice-summary-full { grid-column: 1 / -1; }
+        .voice-summary-list { list-style: none; }
+        .voice-summary-list li { padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 0.2rem; }
+        .voice-summary-list li:last-child { border-bottom: none; }
+        .voice-summary-list .vs-label { font-weight: 600; color: var(--text-main); }
+        .voice-summary-list .vs-desc { font-size: 0.9rem; color: var(--text-muted); }
+        .risk-duration-bar { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+        .risk-badge { padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; }
+        .risk-badge.low { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .risk-badge.medium { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .risk-badge.high { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .duration-badge { color: var(--text-muted); font-size: 0.95rem; }
+        .advice-list { list-style: none; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+        .advice-list li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; color: var(--text-muted); font-size: 0.95rem; line-height: 1.4; }
+        .advice-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent); }
+        .tooltip-icon { opacity: 0.7; cursor: help; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <header class="global-nav">
+        <a href="app.html" class="nav-brand">
+            <i class="fa-solid fa-headphones"></i> Sound<span class="highlight">Sense</span>
+        </a>
+        <nav class="nav-links">
+            <a href="app.html">AI Voice Check</a>
+            <a href="app.html">Interview Coach</a>
+            <a href="app.html">History</a>
+            <a href="about.html">About</a>
+        </nav>
+        <div class="nav-user">
+            <span class="user-name">
+                <i class="fa-solid fa-circle-user"></i>
+                Hi, <span id="user-display-name">User</span>
+            </span>
+            <button id="logout-btn" class="btn-secondary btn-small">Logout</button>
+        </div>
+    </header>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="result-page-container result-page-with-nav">
+        <a href="app.html" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i> Analyze Another Audio
+        </a>
+
+        <div class="prediction-card">
+            <div class="card-bg-pulse" id="pulse-bg"></div>
+            
+            <div class="confidence-circle" id="conf-circle">
+                <div class="conf-value" id="res-confidence">--%</div>
+                <div class="conf-label">Confidence</div>
+            </div>
+
+            <h1 class="huge-prediction" id="res-prediction">Loading...</h1>
+            
+            <p class="explanation-text" id="res-explanation">Retrieving analysis data...</p>
+
+            <div class="audio-section" id="audio-section" style="text-align: center; margin: 1.5rem 0; position: relative; z-index: 1;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 0.75rem; color: var(--text-muted); font-size: 0.9rem;">
+                    <i class="fa-solid fa-music"></i>
+                    <span>Original Audio</span>
+                </div>
+                <audio id="res-audio-player" controls style="width: 100%; max-width: 450px; height: 40px; border-radius: 50px; outline: none; display: none;"></audio>
+                <p id="audio-unavailable-msg" style="display: none; color: var(--text-muted); font-size: 0.85rem; font-style: italic;">
+                    <i class="fa-solid fa-info-circle"></i> Audio file not available for historical results
+                </p>
+            </div>
+
+            <div class="risk-duration-bar">
+                <span class="risk-badge" id="res-risk-badge">--</span>
+                <span class="duration-badge" id="res-duration">Duration: --</span>
+            </div>
+            <ul class="advice-list" id="res-advice"></ul>
+
+            <div class="details-grid">
+                <div class="detail-box">
+                    <h4><i class="fa-solid fa-language"></i> Language</h4>
+                    <div class="detail-value" id="res-language">Unknown</div>
+                </div>
+                <div class="detail-box">
+                    <h4><i class="fa-solid fa-clock"></i> Duration</h4>
+                    <div class="detail-value" id="res-duration-val">--</div>
+                </div>
+                <div class="detail-box voice-summary-full" id="voice-summary-box" style="display: none;">
+                    <h4><i class="fa-solid fa-list-check"></i> What we checked</h4>
+                    <ul class="voice-summary-list" id="res-voice-summary"></ul>
+                </div>
+
+                <div class="detail-box transcript-full">
+                    <h4><i class="fa-solid fa-comment-dots"></i> Detected Transcript</h4>
+                    <div class="detail-value" id="res-transcript" style="font-size: 0.95rem; font-weight: normal;">No transcript available.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/df_result.js"></script>
+    <script>
+        document.getElementById('user-display-name').textContent = localStorage.getItem('user_name') || 'User';
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_name');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

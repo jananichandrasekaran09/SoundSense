@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundSense | Authentication</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="auth-body">
+    <!-- Enhanced Abstract background -->
+    <div class="gradient-bg"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+    <div class="grid-overlay"></div>
+
+    <header class="auth-page-header">
+        <a href="index.html" class="auth-header-brand">
+            <span class="brand-text">SoundSense</span>
+        </a>
+        <span class="auth-header-tagline">Voice & Interview</span>
+    </header>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1 class="auth-title">Sound<span class="gradient-text">Sense</span></h1>
+            <p class="auth-subtitle">AI-Powered Voice Analysis Platform</p>
+        </div>
+
+        <!-- Login Form -->
+        <div class="auth-form-container" id="login-form-container">
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn primary-btn auth-btn">Sign In <span class="arrow">→</span></button>
+            </form>
+            <p class="auth-switch">Don't have an account? <a href="#" id="switch-to-register">Create one</a></p>
+        </div>
+
+        <!-- Registration Form (Hidden by default) -->
+        <div class="auth-form-container hidden" id="register-form-container">
+            <form id="register-form">
+                <div class="input-group">
+                    <label for="register-name">Full Name</label>
+                    <input type="text" id="register-name" placeholder="John Doe" required>
+                </div>
+                <div class="input-group">
+                    <label for="register-email">Email Address</label>
+                    <input type="email" id="register-email" placeholder="john@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" placeholder="Create a strong password" required>
+                </div>
+                <button type="submit" class="btn secondary-btn auth-btn">Create Account</button>
+            </form>
+            <p class="auth-switch">Already have an account? <a href="#" id="switch-to-login">Sign in</a></p>
+        </div>
+
+        <!-- Error/Success Messages -->
+        <div id="auth-message" class="auth-message hidden"></div>
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+</html>

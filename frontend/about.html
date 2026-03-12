@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About – SoundSense</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .about-page-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 2rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        .about-hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .about-hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #a5b4fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+        .about-hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        .about-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.06) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: 20px;
+            padding: 1.75rem 2rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(30px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .about-section:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 15px 50px rgba(99, 102, 241, 0.25);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(15, 23, 42, 0.8) 100%);
+        }
+        
+        .about-section:hover::before {
+            opacity: 1;
+        }
+        .about-section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+        .about-section h2 i {
+            color: var(--primary);
+        }
+        .about-section p {
+            color: var(--text-muted);
+            line-height: 1.65;
+            font-size: 0.98rem;
+        }
+        .about-section ul {
+            margin: 0.75rem 0 0 1.25rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+    </style>
+</head>
+<body>
+    <header class="global-nav">
+        <a href="app.html" class="nav-brand">
+            <i class="fa-solid fa-headphones"></i> Sound<span class="highlight">Sense</span>
+        </a>
+        <nav class="nav-links">
+            <a href="app.html">AI Voice Check</a>
+            <a href="app.html">Interview Coach</a>
+            <a href="app.html">History</a>
+            <a href="about.html" class="active">About</a>
+        </nav>
+        <div class="nav-user">
+            <span class="user-name">
+                <i class="fa-solid fa-circle-user"></i>
+                Hi, <span id="user-display-name">User</span>
+            </span>
+            <button id="logout-btn" class="btn-secondary btn-small">Logout</button>
+        </div>
+    </header>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="about-page-container">
+        <div class="about-hero">
+            <h1>About SoundSense</h1>
+            <p>Voice authenticity checking and interview practice in one place.</p>
+        </div>
+
+        <section class="about-section">
+            <h2><i class="fa-solid fa-circle-info"></i> What is SoundSense?</h2>
+            <p>SoundSense helps you verify whether an audio clip sounds like a real human voice or an AI-generated one, and gives you structured feedback on interview answers. Use it to spot potential deepfakes or to practice and improve your interview responses.</p>
+        </section>
+
+        <section class="about-section">
+            <h2><i class="fa-solid fa-waveform-lines"></i> AI Voice Check</h2>
+            <p>Upload an audio file or record live to analyze the voice for authenticity.</p>
+            <ul>
+                <li><strong>Upload or record</strong> — Support for WAV, MP3, and OGG. You can also record directly in the browser.</li>
+                <li><strong>Acoustic analysis</strong> — The system checks multiple voice features (e.g. prosody, spectral and energy patterns) to estimate how human-like the voice sounds.</li>
+                <li><strong>Result</strong> — You get a label (e.g. Human / AI-generated), a confidence score, risk level, and plain-language advice on what was checked.</li>
+            </ul>
+        </section>
+
+        <section class="about-section">
+            <h2><i class="fa-solid fa-users-viewfinder"></i> Interview Coach</h2>
+            <p>Record or upload an interview answer and get feedback on clarity, confidence, and structure.</p>
+            <ul>
+                <li><strong>Optional question</strong> — You can enter the interview question (e.g. “Tell me about yourself”) so feedback can be more targeted.</li>
+                <li><strong>Upload or record</strong> — Same audio options as AI Voice Check.</li>
+                <li><strong>Evaluation</strong> — The system transcribes your answer and scores multiple criteria (e.g. clarity, confidence, structure, relevance). You see an overall score, strengths, and areas to improve.</li>
+            </ul>
+        </section>
+
+        <section class="about-section">
+            <h2><i class="fa-solid fa-clock-rotate-left"></i> History</h2>
+            <p>All your analyses are saved so you can review them later.</p>
+            <ul>
+                <li><strong>Stats</strong> — Quick counts for voice checks and interview evaluations, plus how often AI was detected in voice checks.</li>
+                <li><strong>List</strong> — Past voice checks and interview sessions with dates. Use “View” to open the full result (scores, transcript, advice).</li>
+            </ul>
+        </section>
+    </div>
+
+    <script>
+        (function() {
+            var name = localStorage.getItem('user_name') || 'User';
+            var el = document.getElementById('user-display-name');
+            if (el) el.textContent = name;
+            var btn = document.getElementById('logout-btn');
+            if (btn) btn.addEventListener('click', function() {
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('user_name');
+                window.location.href = 'login.html';
+            });
+        })();
+    </script>
+</body>
+</html>
