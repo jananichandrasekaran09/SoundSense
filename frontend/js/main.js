@@ -218,23 +218,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const analyzeBtn = document.getElementById(`analyze-btn-${module}`);
         const loadingState = document.getElementById(`loading-${module}`);
+        const progressBar = document.getElementById(`progress-bar-${module}`);
+        const progressPercent = document.getElementById(`progress-percent-${module}`);
+        const progressStage = document.getElementById(`progress-stage-${module}`);
+        const progressStatus = document.getElementById(`progress-status-${module}`);
+        
         analyzeBtn.disabled = true;
         loadingState.classList.remove('hidden');
 
+        // Reset progress
+        progressBar.style.width = '0%';
+        progressPercent.textContent = '0%';
+        progressStage.textContent = 'Preparing upload...';
+        progressStatus.textContent = 'Starting...';
+
         try {
             const endpoint = module === 'df' ? '/api/analyze-deepfake' : '/api/evaluate-interview';
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: authHeaders(),
-                body: formData
+            
+            // Use XMLHttpRequest for progress tracking
+            const data = await new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                
+                // Upload progress
+                xhr.upload.addEventListener('progress', (e) => {
+                    if (e.lengthComputable) {
+                        const percentComplete = Math.round((e.loaded / e.total) * 100);
+                        progressBar.style.width = percentComplete + '%';
+                        progressPercent.textContent = percentComplete + '%';
+                        progressStage.textContent = 'Uploading audio file...';
+                        progressStatus.textContent = `${(e.loaded / 1024).toFixed(0)} KB / ${(e.total / 1024).toFixed(0)} KB`;
+                    }
+                });
+
+                // Upload complete, now processing
+                xhr.upload.addEventListener('load', () => {
+                    progressBar.style.width = '100%';
+                    progressPercent.textContent = '100%';
+                    progressStage.textContent = module === 'df' ? 'Analyzing audio features...' : 'Processing interview response...';
+                    progressStatus.textContent = 'Please wait...';
+                    
+                    // Simulate processing stages
+                    setTimeout(() => {
+                        progressStage.textContent = module === 'df' ? 'Running AI detection model...' : 'Transcribing speech...';
+                    }, 1000);
+                    
+                    setTimeout(() => {
+                        progressStage.textContent = module === 'df' ? 'Calculating confidence scores...' : 'Evaluating performance metrics...';
+                    }, 2000);
+                });
+
+                xhr.addEventListener('load', () => {
+                    if (xhr.status === 401) {
+                        localStorage.removeItem('auth_token');
+                        localStorage.removeItem('user_name');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            resolve(response);
+                        } catch (e) {
+                            reject(new Error('Invalid response format'));
+                        }
+                    } else {
+                        try {
+                            const errorData = JSON.parse(xhr.responseText);
+                            reject(new Error(errorData.error || 'API Error'));
+                        } catch (e) {
+                            reject(new Error('Request failed'));
+                        }
+                    }
+                });
+
+                xhr.addEventListener('error', () => {
+                    reject(new Error('Network error'));
+                });
+
+                xhr.open('POST', endpoint);
+                xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                xhr.send(formData);
             });
 
-            if (handle401(response)) return;
-
-            const data = await response.json().catch(() => ({}));
-            if (!response.ok) throw new Error(data.error || 'API Error');
-            loadingState.classList.add('hidden');
-
+            // Save audio to IndexedDB
             try {
                 const db = await new Promise((resolve, reject) => {
                     const req = indexedDB.open('VoiceAIDB', 1);
@@ -248,6 +315,8 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) {
                 console.warn('IndexedDB save failed', e);
             }
+
+            loadingState.classList.add('hidden');
 
             if (module === 'df') {
                 sessionStorage.setItem('df_analysis_result', JSON.stringify(data));

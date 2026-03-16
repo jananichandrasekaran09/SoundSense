@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoundSense - Analysis</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -60,10 +62,21 @@
                 </div>
 
                 <div class="loading-state hidden" id="loading-df">
-                    <div class="waveform">
-                        <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="progress-loader">
+                        <div class="loader-icon">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <div class="progress-info">
+                            <p class="progress-stage" id="progress-stage-df">Preparing upload...</p>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" id="progress-bar-df"></div>
+                            </div>
+                            <div class="progress-details">
+                                <span class="progress-percent" id="progress-percent-df">0%</span>
+                                <span class="progress-status" id="progress-status-df">Starting...</span>
+                            </div>
+                        </div>
                     </div>
-                    <p>Analyzing acoustic features...</p>
                 </div>
 
             </section>
@@ -99,8 +112,21 @@
                 </div>
 
                 <div class="loading-state hidden" id="loading-int">
-                    <div class="spinner"></div>
-                    <p>Transcribing and scoring 9 key criteria...</p>
+                    <div class="progress-loader">
+                        <div class="loader-icon">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <div class="progress-info">
+                            <p class="progress-stage" id="progress-stage-int">Preparing upload...</p>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" id="progress-bar-int"></div>
+                            </div>
+                            <div class="progress-details">
+                                <span class="progress-percent" id="progress-percent-int">0%</span>
+                                <span class="progress-status" id="progress-status-int">Starting...</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </section>

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoundSense – Voice & Interview</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="favicon.ico">
     <!-- Modern typography -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/landing.css">
@@ -15,6 +17,9 @@
     <div class="glow glow-2"></div>
     <div class="glow glow-3"></div>
     <div class="grid-overlay"></div>
+
+    <!-- Scroll to top button -->
+    <button id="scrollTopBtn" class="scroll-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
 
     <div class="landing-container">
         
@@ -67,9 +72,207 @@
                 <div class="particle"></div>
             </div>
         </header>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="how-it-works-section">
+            <div class="section-header">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">Get started in three simple steps</p>
+            </div>
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Sign Up & Login</h3>
+                    <p>Create your account in seconds and access your personalized dashboard</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Upload Audio</h3>
+                    <p>Record or upload your voice sample for analysis or interview practice</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Get Results</h3>
+                    <p>Receive instant AI-powered insights, feedback, and detailed analysis</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits-section">
+            <div class="section-header">
+                <h2 class="section-title">Why Choose SoundSense?</h2>
+                <p class="section-subtitle">Advanced AI technology meets practical application</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Real-Time Analysis</h3>
+                    <p>Get instant feedback and results powered by cutting-edge AI models</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔒</div>
+                    <h3>Secure & Private</h3>
+                    <p>Your data is encrypted and protected with industry-standard security</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📊</div>
+                    <h3>Detailed Reports</h3>
+                    <p>Comprehensive analytics and insights to track your progress over time</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Accuracy First</h3>
+                    <p>Advanced machine learning algorithms trained on extensive datasets</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">💡</div>
+                    <h3>Actionable Feedback</h3>
+                    <p>Practical recommendations to improve your interview performance</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🌐</div>
+                    <h3>Multi-Language Support</h3>
+                    <p>Analysis available in multiple languages for global accessibility</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases Section -->
+        <section class="use-cases-section">
+            <div class="section-header">
+                <h2 class="section-title">Perfect For</h2>
+                <p class="section-subtitle">Diverse applications for various needs</p>
+            </div>
+            <div class="use-cases-grid">
+                <div class="use-case-card">
+                    <h3>🎓 Students & Job Seekers</h3>
+                    <p>Practice interview responses and get feedback to ace your next opportunity</p>
+                </div>
+                <div class="use-case-card">
+                    <h3>🏢 HR Professionals</h3>
+                    <p>Verify candidate authenticity and assess communication skills objectively</p>
+                </div>
+                <div class="use-case-card">
+                    <h3>🛡️ Security Teams</h3>
+                    <p>Detect deepfake audio and synthetic voices to prevent fraud</p>
+                </div>
+                <div class="use-case-card">
+                    <h3>📱 Content Creators</h3>
+                    <p>Verify audio authenticity and ensure content credibility</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Terms and Conditions Section -->
+        <section id="terms" class="terms-section">
+            <div class="section-header">
+                <h2 class="section-title">Terms & Conditions</h2>
+            </div>
+            <div class="terms-content">
+                <div class="terms-group">
+                    <h3>1. Acceptance of Terms</h3>
+                    <p>By accessing and using SoundSense, you accept and agree to be bound by these terms and conditions. If you do not agree, please do not use our services.</p>
+                </div>
+                
+                <div class="terms-group">
+                    <h3>2. Service Description</h3>
+                    <p>SoundSense provides AI-powered voice analysis services, including deepfake detection and interview evaluation. Results are provided for informational purposes and should not be considered as definitive legal evidence.</p>
+                </div>
+                
+                <div class="terms-group">
+                    <h3>3. User Responsibilities</h3>
+                    <ul>
+                        <li>You must be at least 18 years old to use our services</li>
+                        <li>Provide accurate information during registration</li>
+                        <li>Keep your account credentials secure and confidential</li>
+                        <li>Use the service only for lawful purposes</li>
+                        <li>Do not upload copyrighted or unauthorized audio content</li>
+                    </ul>
+                </div>
+                
+                <div class="terms-group">
+                    <h3>4. Privacy & Data Protection</h3>
+                    <p>We collect and process audio data solely for analysis purposes. Audio files are temporarily stored for processing and deleted after analysis. User data is encrypted and protected according to industry standards.</p>
+                </div>
+                
+                <div class="terms-group">
+                    <h3>5. Service Limitations</h3>
+                    <p>While we strive for accuracy, AI analysis may not be 100% accurate. Results should be used as one factor among many in decision-making. We reserve the right to modify, suspend, or discontinue services at any time.</p>
+                </div>
+                
+                <div class="terms-group">
+                    <h3>6. Intellectual Property</h3>
+                    <p>All content, trademarks, and intellectual property on this platform are owned by SoundSense. Users retain rights to their uploaded content but grant us license to process it for service delivery.</p>
+                </div>
+                
+                <div class="terms-group">
+                    <h3>7. Limitation of Liability</h3>
+                    <p>SoundSense is not liable for any damages arising from use or inability to use our services. Results are provided "as is" without warranties of any kind.</p>
+                </div>
+                
+                <div class="terms-group">
+                    <h3>8. Updates to Terms</h3>
+                    <p>We reserve the right to modify these terms at any time. Continued use of the service after changes constitutes acceptance of new terms.</p>
+                </div>
+                
+                <div class="terms-group">
+                    <h3>9. Contact Information</h3>
+                    <p>For questions about these terms, please contact us at: <a href="mailto:support@soundsense.com" class="email-link">support@soundsense.com</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="landing-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>SoundSense</h4>
+                    <p>AI-Powered Voice Analysis Platform</p>
+                    <p class="copyright">© 2026 SoundSense. All rights reserved.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="login.html">Sign Up</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#terms">Terms & Conditions</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#data">Data Protection</a></li>
+                        <li><a href="#cookies">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:support@soundsense.com">Contact Us</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#help">Help Center</a></li>
+                        <li><a href="#feedback">Give Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <script>
+        // Show/hide scroll to top button
+        window.addEventListener('scroll', () => {
+            const scrollBtn = document.getElementById('scrollTopBtn');
+            if (window.pageYOffset > 300) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
+
         // Floating animation for glows
         document.querySelectorAll('.glow').forEach((glow, index) => {
             const delay = index * 2000;
