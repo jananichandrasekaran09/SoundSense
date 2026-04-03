@@ -44,18 +44,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Overall Score Ring
         const score = data.overall_score;
         document.getElementById('res-overall-score').textContent = score;
-        document.getElementById('res-overall-feedback').textContent = data.overall_feedback;
-        document.getElementById('res-transcript').textContent = `"${data.transcript}"`;
+        
+        // Use provided overall_feedback or generate based on score
+        const overallFeedback = data.overall_feedback || (() => {
+            if (score >= 85) return 'Excellent performance! Outstanding communication skills demonstrated.';
+            else if (score >= 75) return 'Great job! Strong performance with room for minor improvements.';
+            else if (score >= 65) return 'Good effort. Some areas need attention for better results.';
+            else if (score >= 50) return 'Fair performance. Consider working on the suggested improvements.';
+            else return 'Needs improvement. Focus on developing key communication skills.';
+        })();
+        
+        document.getElementById('res-overall-feedback').textContent = overallFeedback;
+        document.getElementById('res-transcript').textContent = `"${data.transcript || data.transcription || 'No transcription available'}"`;
 
+        // Display strengths - use provided strengths array or extract from feedback
+        const strengthsElem = document.getElementById('res-strengths');
         if (data.strengths && data.strengths.length) {
-            document.getElementById('res-strengths').innerHTML = data.strengths.map(s => `<li>${s}</li>`).join('');
+            strengthsElem.innerHTML = data.strengths.map(s => `<li>${s}</li>`).join('');
+        } else if (data.feedback && data.feedback.length) {
+            const strengths = data.feedback.filter(f => !f.toLowerCase().includes('consider') && !f.toLowerCase().includes('improve'));
+            if (strengths.length) {
+                strengthsElem.innerHTML = strengths.map(s => `<li>${s}</li>`).join('');
+            }
         }
+        
+        // Handle question display
         if (data.question) {
             document.getElementById('res-question').textContent = data.question;
             document.getElementById('question-card').style.display = 'block';
         }
+        
         if (data.language) {
-            document.getElementById('res-language').textContent = data.language;
+            document.getElementById('res-language').textContent = data.language.toUpperCase();
         }
 
         // Load Audio only when not viewing from history
@@ -101,16 +121,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Criteria list
         const criteriaList = document.getElementById('res-criteria-list');
-        for (const [criterion, critScore] of Object.entries(data.criteria_scores)) {
+        const scoresData = data.scores || data.criteria_scores || {};
+        
+        for (const [criterion, critScore] of Object.entries(scoresData)) {
             
             let gradient = `linear-gradient(90deg, var(--primary), var(--accent))`;
             if (critScore < 60) gradient = `linear-gradient(90deg, var(--danger), #f87171)`;
             else if (critScore < 80) gradient = `linear-gradient(90deg, var(--warning), #fbbf24)`;
 
+            // Format criterion name (capitalize first letter of each word)
+            const formattedCriterion = criterion.split('_').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+
             const html = `
                 <div class="criterion-item">
                     <div class="criterion-header">
-                        <span>${criterion}</span>
+                        <span>${formattedCriterion}</span>
                         <span>${critScore}/100</span>
                     </div>
                     <div class="progress-bar">
@@ -124,15 +151,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Animate fills
         setTimeout(() => {
             const fills = document.querySelectorAll('.progress-fill');
-            Object.values(data.criteria_scores).forEach((val, idx) => {
+            Object.values(scoresData).forEach((val, idx) => {
                 fills[idx].style.width = `${val}%`;
             });
         }, 300);
 
-        // Suggestions
+        // Suggestions - use improvement_suggestions if available, otherwise filter feedback
         const suggList = document.getElementById('res-suggestions');
-        if (data.improvement_suggestions && data.improvement_suggestions.length > 0) {
-            data.improvement_suggestions.forEach(sugg => {
+        let suggestions = data.improvement_suggestions || [];
+        
+        // If no improvement_suggestions, try to extract from feedback array
+        if (!suggestions.length && data.feedback && data.feedback.length) {
+            suggestions = data.feedback.filter(s => 
+                s.toLowerCase().includes('consider') || 
+                s.toLowerCase().includes('improve') || 
+                s.toLowerCase().includes('try') ||
+                s.toLowerCase().includes('reduce') ||
+                s.toLowerCase().includes('increase') ||
+                s.toLowerCase().includes('focus') ||
+                s.toLowerCase().includes('ensure')
+            );
+        }
+        
+        if (suggestions.length > 0) {
+            suggestions.forEach(sugg => {
                 suggList.insertAdjacentHTML('beforeend', `<li>${sugg}</li>`);
             });
         } else {
