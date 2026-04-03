@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 
 from config import PORT, DEBUG
 from auth import encode_token, require_auth
-from models.deepfake_detector import analyze_deepfake
+from backend.models.deepfake_detector import analyze_deepfake
 from models.interview_evaluator import evaluate_interview
 from database import (
     init_db, create_user, authenticate_user,
