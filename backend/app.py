@@ -179,7 +179,9 @@ def serve_static(path):
     if path.startswith('api/'):
         return "Not Found", 404
     return _serve_frontend(path)
-
-
 if __name__ == '__main__':
+    import os
+    port = int(os.environ.get('PORT', PORT))  # Use Render port if available
+    app.run(host='0.0.0.0', port=port, debug=DEBUG)
+
     app.run(debug=DEBUG, port=PORT)
